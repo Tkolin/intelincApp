@@ -11,7 +11,7 @@
     <Grid Background="White">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
             <TextBlock Margin="5,0,0,0">Номер:</TextBlock>
-            <TextBox x:Name="idBox"/>
+            <TextBox x:Name="idBox" IsEnabled="False"/>
             <TextBlock Margin="5,0,0,0">Дата:</TextBlock>
             <DatePicker x:Name="dateBox"/>
             <Button x:Name="nowDateBtn" Click="nowDateBtn_Click" Content="Текущая дата"/>
