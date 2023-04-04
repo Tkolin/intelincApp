@@ -6,11 +6,11 @@
       xmlns:local="clr-namespace:intelincApp"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="WarehousePage">
+      Title="WarehousePage" Loaded="Page_Loaded">
 
     <Grid>
        
-        <StackPanel Orientation="Vertical" Margin="26,60,26,26">
+        <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
               
                 <TextBlock  VerticalAlignment="Center">Поиск:</TextBlock>
@@ -19,13 +19,10 @@
 
             <DataGrid  Height="300" x:Name="dataGrid" AutoGenerateColumns="False" IsReadOnly="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Дата фиксации" Binding="{Binding FilingDate}" Width="2*"/>
-                    <DataGridTextColumn Header="Тип заявления" Binding="{Binding TypsApplications.Name}" Width="2*"/>
-                    <DataGridTextColumn Header="Обращение" Binding="{Binding Complaints.ID}" Width="2*"/>
-                    <DataGridTextColumn Header="Дата обращения" Binding="{Binding Complaints.Date}" Width="2*"/>
-                    <DataGridTextColumn Header="Фамилия исполнителя" Binding="{Binding Executors.LastName}" Width="2.5*"/>
-                    <DataGridTextColumn Header="Отчество" Binding="{Binding Executors.Patronymic}" Width="2*"/>
-                    <DataGridTextColumn Header="Статус" Binding="{Binding Statuses.Name}" Width="1*"/>
+                    <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="2*"/>
+                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="2*"/>
+                    <DataGridTextColumn Header="Цена" Binding="{Binding Price}" Width="2*"/>
+                    <DataGridTextColumn Header="Кол-во" Binding="{Binding Count}" Width="2*"/>
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel  Orientation="Horizontal" VerticalAlignment="Center">

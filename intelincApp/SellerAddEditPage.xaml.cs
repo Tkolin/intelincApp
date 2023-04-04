@@ -21,7 +21,7 @@ namespace intelincApp
     public partial class SellerAddEditPage : Page
     {
         private Sale sale;
-
+        private bool newSale = true;
         public SellerAddEditPage()
         {
             InitializeComponent();
@@ -30,15 +30,16 @@ namespace intelincApp
         {
             InitializeComponent();
             this.sale = sale;
-            
+            newSale = false;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             itemBox.SelectedValuePath = "ID";
             itemBox.DisplayMemberPath = "Name";
-            itemBox.ItemsSource = intelicBDEntities.GetContext().Items.ToList();
-
-
+            if(sale != null)
+                itemBox.ItemsSource = intelicBDEntities.GetContext().Items.ToList();
+            else
+                itemBox.ItemsSource = intelicBDEntities.GetContext().Items.Where(i=>i.Count > 0).ToList();
 
             if (sale != null)
             {
@@ -54,26 +55,35 @@ namespace intelincApp
             if (sale == null)
                 sale = new Sale();
             else
-                count = sale.Count;
+                count = (int)sale.Count;
 
-            sale.Date = dateBox.SelectedDate;
-            sale.Count = Convert.ToInt32(countBox.Text);
-            sale.Item = itemBox.SelectedItem as Item;
 
-            if((sale.Item.Count + count) < sale.Count)
+            Item item = itemBox.SelectedItem as Item;
+            int tBoxCountValue = Convert.ToInt32(countBox.Text);
+
+            if ((item.Count + count - tBoxCountValue) >= 0)
             {
-                countBox.Text = null;
-                MessageBox.Show("На складе не хватает тавара!");
-                return;
-            }
 
-            if (sale.Number < 0)
-            {
-                intelicBDEntities.GetContext().Sales.Add(sale);
+                sale.Date = dateBox.SelectedDate;
+                sale.Count = tBoxCountValue;
+                sale.Item = item;
+
+                if (newSale)
+                {
+                    intelicBDEntities.GetContext().Sales.Add(sale);
+                }
+
+                item.Count += count;
+                item.Count -= sale.Count;
+                intelicBDEntities.GetContext().SaveChanges();
+                NavigationService.GoBack();
             }
-            intelicBDEntities.GetContext().SaveChanges();
-            sale.Item.Count -= count;
-            intelicBDEntities.GetContext().SaveChanges();
+            else
+            {
+                MessageBox.Show("На складе нет товара!");
+                sale = null;
+            }
+             
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -85,5 +95,6 @@ namespace intelincApp
         {
             dateBox.SelectedDate = DateTime.Now;    
         }
+
     }
 }

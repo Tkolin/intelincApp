@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:intelincApp"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="WarehouseAddEditPage">
+      Title="WarehouseAddEditPage" Loaded="Page_Loaded">
 
     <Grid Background="White">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">

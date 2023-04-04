@@ -30,7 +30,12 @@ namespace intelincApp
         {
             if (dataGrid.SelectedItem == null)
                 return;
-            var sale = dataGrid.SelectedItems as Sale;
+
+            Sale sale = dataGrid.SelectedItems as Sale;
+
+            Item item = sale.Item as Item;
+            item.Count += sale.Count;
+
             try
             {
                 intelicBDEntities.GetContext().Sales.Remove(sale);
@@ -42,9 +47,9 @@ namespace intelincApp
 
                 MessageBox.Show(ex.Message.ToString());
             }
-
+        
             UpdateList();
-
+            dataGrid.ItemsSource = saleVisual;
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -69,11 +74,14 @@ namespace intelincApp
         private void tBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateList();
+            dataGrid.ItemsSource = saleVisual;
         }
 
         public void UpdateList()
         {
-            saleVisual = saleVisual.Where(d => tBoxSearch.Text.Length > 0 && d.Item.Name.ToLower().Contains(tBoxSearch.Text.ToLower())).ToList();
+            saleVisual = intelicBDEntities.GetContext().Sales.ToList();
+            if (tBoxSearch.Text.Length > 0)
+                saleVisual = saleVisual.Where(d => d.Item.Name.ToLower().Contains(tBoxSearch.Text.ToLower())).ToList();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

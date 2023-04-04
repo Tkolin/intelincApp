@@ -15,8 +15,8 @@ namespace intelincApp
     public partial class Sale
     {
         public int Number { get; set; }
-        public string Date { get; set; }
-        public string Count { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public Nullable<int> Count { get; set; }
         public Nullable<int> ItemID { get; set; }
     
         public virtual Item Item { get; set; }

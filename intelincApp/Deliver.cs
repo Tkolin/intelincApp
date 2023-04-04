@@ -16,7 +16,7 @@ namespace intelincApp
     {
         public int Number { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
-        public Nullable<double> Count { get; set; }
+        public Nullable<int> Count { get; set; }
         public Nullable<int> ItemID { get; set; }
         public Nullable<int> SupplierID { get; set; }
     

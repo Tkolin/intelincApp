@@ -23,6 +23,7 @@ namespace intelincApp
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Content = new LoginPage();
         }
     }
 }

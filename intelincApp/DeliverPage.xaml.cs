@@ -17,10 +17,10 @@ namespace intelincApp
 {
     /// <summary>
     /// Логика взаимодействия для DeliverPage.xaml
-    /// </summary>
+    /// </summary>1
     public partial class DeliverPage : Page
     {
-        private List<Deliver> devVisual = intelicBDEntities.GetContext().Delivers.ToList();
+        private List<Deliver> devVisual;
         public DeliverPage()
         {
             InitializeComponent();
@@ -30,21 +30,31 @@ namespace intelincApp
         {
             if (dataGrid.SelectedItem == null)
                 return;
-            var deliver = dataGrid.SelectedItems as Deliver;
-            try
+            Deliver deliver = dataGrid.SelectedItem as Deliver;
+            if(deliver.Count <= deliver.Item.Count)
             {
-                intelicBDEntities.GetContext().Delivers.Remove(deliver);
-                intelicBDEntities.GetContext().SaveChanges();
-                MessageBox.Show("Данные удалены! ");
-            }
-            catch (Exception ex)
-            {
+                Item item = deliver.Item as Item;
+                item.Count -= deliver.Count;
+                try
+                {
+                    intelicBDEntities.GetContext().Delivers.Remove(deliver);
+                    intelicBDEntities.GetContext().SaveChanges();
+                    MessageBox.Show("Данные удалены!");
+                }
+                catch (Exception ex)
+                {
 
-                MessageBox.Show(ex.Message.ToString());
+                    MessageBox.Show(ex.Message.ToString());
+                }
             }
+            else
+            {
+                MessageBox.Show("Предметы на складе уйдут в минус!");
+            }
+
 
             UpdateList();
-
+            dataGrid.ItemsSource = devVisual;
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -69,11 +79,16 @@ namespace intelincApp
         private void tBoxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdateList();
+            dataGrid.ItemsSource = devVisual;
         }
 
         public void UpdateList()
-        {       
-           devVisual = devVisual.Where(d=> tBoxSearch.Text.Length > 0 && d.Item.Name.ToLower().Contains(tBoxSearch.Text.ToLower())).ToList();
+        {
+            devVisual = intelicBDEntities.GetContext().Delivers.ToList();
+            if(tBoxSearch.Text.Length > 0)
+            devVisual = devVisual.Where(d =>  
+            d.Item.Name.ToLower().Contains(tBoxSearch.Text.ToLower())).ToList();
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

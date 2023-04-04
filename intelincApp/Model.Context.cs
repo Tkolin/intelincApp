@@ -27,7 +27,7 @@ namespace intelincApp
         private static intelicBDEntities _context;
         public static intelicBDEntities GetContext()
         {
-            if(_context == null)
+            if (_context == null)
                 _context = new intelicBDEntities();
             return _context;
         }

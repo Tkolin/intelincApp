@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:intelincApp"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="SellerAddEditPage">
+      Title="SellerAddEditPage" Loaded="Page_Loaded">
 
     <Grid Background="White">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
@@ -19,7 +19,7 @@
             <ComboBox x:Name="itemBox"/>
             <TextBlock Margin="5,0,0,0">Кол-во:</TextBlock>
             <TextBox x:Name="countBox"/>
-            <Button  Margin="2,20,2,2"  x:Name="btnNext" Click="btnNext_Click">Сохранить</Button>
+            <Button  Margin="2,20,2,2"  x:Name="btnSave" Click="btnSave_Click">Сохранить</Button>
             <Button Margin="2"  x:Name="btnBack" Click="btnBack_Click">Назад</Button>
 
 

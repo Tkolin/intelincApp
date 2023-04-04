@@ -22,6 +22,7 @@ namespace intelincApp
     {
 
         private Deliver deliver;
+        private bool newDeliver = true;
         public DeliverAddEditPage()
         {
             InitializeComponent();
@@ -30,6 +31,7 @@ namespace intelincApp
         {
             InitializeComponent();
             this.deliver = deliver;
+            newDeliver = false;
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -57,28 +59,47 @@ namespace intelincApp
             if (deliver == null)
                 deliver = new Deliver();
             else
-                count = deliver.Count;
+                count = (int)deliver.Count;
 
-            deliver.Date = dateBox.SelectedDate;
-            deliver.Count =Convert.ToInt32( countBox.Text);
-            deliver.Item = itemBox.SelectedItem as Item;
-            deliver.Supplier = supplerBox.SelectedItem as Supplier;
 
-           
-           
-           
-            if (deliver.Number < 0)
+
+
+            Item item = itemBox.SelectedItem as Item;
+            int tBoxCountValue = Convert.ToInt32(countBox.Text);
+            if ((item.Count - count + tBoxCountValue) > 0)
             {
-                intelicBDEntities.GetContext().Delivers.Add(deliver);
+                deliver.Date = dateBox.SelectedDate;
+                deliver.Count = tBoxCountValue;
+                deliver.Item = item;
+                deliver.Supplier = supplerBox.SelectedItem as Supplier;
+
+                if (newDeliver)
+                {
+                    intelicBDEntities.GetContext().Delivers.Add(deliver);
+                }
+
+                item.Count -= count;
+                item.Count += deliver.Count;
+                intelicBDEntities.GetContext().SaveChanges();
+                NavigationService.GoBack();
             }
-            intelicBDEntities.GetContext().SaveChanges();
-            deliver.Item.Count += count;
-            intelicBDEntities.GetContext().SaveChanges();
+            else
+            {
+                MessageBox.Show("На складе нет товара!");
+                deliver = null;
+            }
+
+
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
+        }
+
+        private void nowDateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            dateBox.SelectedDate = DateTime.Now;
         }
     }
 }
